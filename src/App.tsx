@@ -6,6 +6,9 @@ import { selectUser, login, logout } from './features/userSlice';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
+import ChatRoom from './components/ChatRoom';
+import Auth from './components/Auth';
+
 const App: React.FC = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
@@ -29,7 +32,17 @@ const App: React.FC = () => {
     };
   }, [dispatch]);
 
-  return <Sdiv className="App"></Sdiv>;
+  return (
+    <>
+      {user.uid ? (
+        <Sdiv className="App">
+          <ChatRoom />
+        </Sdiv>
+      ) : (
+        <Auth />
+      )}
+    </>
+  );
 };
 
 const Sdiv = styled.div`
