@@ -11,7 +11,7 @@ assignees: kiyo7
 
 * https://example.com
 
-## やったこと
+## やること
 
 * このプルリクで何をしたのか？
 
@@ -34,6 +34,3 @@ assignees: kiyo7
 ## その他
 
 * レビュワーへの参考情報（実装上の懸念点や注意点などあれば記載）
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
