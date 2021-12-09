@@ -15,10 +15,12 @@ import { auth, provider, storage } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth';
 
-// import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from '@mui/icons-material/Google';
+import { IconButton } from '@mui/material';
 
 const theme = createTheme();
 
@@ -33,6 +35,10 @@ export const Auth: React.FC = () => {
 
   const signIn = async () => {
     await signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const signInGoogle = async () => {
+    await signInWithPopup(auth, provider).catch((err) => alert(err.message));
   };
 
   return (
@@ -137,6 +143,10 @@ export const Auth: React.FC = () => {
                   </Link>
                 </Grid>
               </Grid>
+
+              <IconButton>
+                <GoogleIcon onClick={signInGoogle} />
+              </IconButton>
             </Box>
           </Box>
         </Grid>
