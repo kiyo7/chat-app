@@ -7,7 +7,7 @@ import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 import ChatRoom from './components/ChatRoom';
-import Auth from './components/Auth';
+import { Auth } from './components/Auth';
 
 const App: React.FC = () => {
   const user = useSelector(selectUser);
