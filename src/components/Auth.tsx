@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+//material-ui
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,24 +12,39 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import GoogleIcon from '@mui/icons-material/Google';
+import SendIcon from '@mui/icons-material/Send';
+import { IconButton, Modal } from '@mui/material';
+
+import styled from 'styled-components';
 
 import { auth, provider, storage } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithPopup,
-  signOut,
 } from 'firebase/auth';
 
-import GoogleIcon from '@mui/icons-material/Google';
-import { IconButton } from '@mui/material';
-
 const theme = createTheme();
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 export const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
 
   const signUp = async () => {
     await createUserWithEmailAndPassword(auth, email, password);
@@ -35,6 +52,18 @@ export const Auth: React.FC = () => {
 
   const signIn = async () => {
     await signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const sendResetEmail = async (e: React.MouseEvent<HTMLElement>) => {
+    await sendPasswordResetEmail(auth, resetEmail)
+      .then(() => {
+        setOpenModal(false);
+        setResetEmail('');
+      })
+      .catch((err) => {
+        alert(err.message);
+        setResetEmail('');
+      });
   };
 
   const signInGoogle = async () => {
@@ -133,7 +162,7 @@ export const Auth: React.FC = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link onClick={() => setOpenModal(true)}>
                     {isLogin && 'パスワードを忘れた'}
                   </Link>
                 </Grid>
@@ -149,8 +178,37 @@ export const Auth: React.FC = () => {
               </IconButton>
             </Box>
           </Box>
+          <Modal open={openModal} onClose={() => setOpenModal(false)}>
+            <SMDiv style={getModalStyle()}>
+              <div>
+                <TextField
+                  InputLabelProps={{ shrink: true }}
+                  type="email"
+                  name="email"
+                  label="Reset E-mail"
+                  value={resetEmail}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setResetEmail(e.target.value);
+                  }}
+                />
+                <IconButton onClick={sendResetEmail}>
+                  <SendIcon />
+                </IconButton>
+              </div>
+            </SMDiv>
+          </Modal>
         </Grid>
       </Grid>
     </ThemeProvider>
   );
 };
+
+const SMDiv = styled.div`
+  outline: none;
+  position: absolute;
+  width: 500px;
+  border-radius: 10;
+  background-color: #fff;
+  box-shadow: 0 0 10px #8f8b8b;
+  padding: 100px;
+`;
