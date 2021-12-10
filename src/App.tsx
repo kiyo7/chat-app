@@ -49,7 +49,7 @@ const Sdiv = styled.div`
   display: flex;
   height: 100vh;
   padding: 30px 80px;
-  background-color: #3f1f1f;
+  background-color: #d5c9c9;
 `;
 
 export default App;
