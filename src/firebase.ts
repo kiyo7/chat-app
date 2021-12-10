@@ -1,6 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  connectAuthEmulator,
+} from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseApp = initializeApp({
@@ -17,3 +21,7 @@ export const storage = getStorage(firebaseApp);
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const provider = new GoogleAuthProvider();
+
+connectFirestoreEmulator(db, 'localhost', 8080);
+
+connectAuthEmulator(auth, 'http://localhost:9099');
