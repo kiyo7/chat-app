@@ -10,34 +10,30 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
-import SendIcon from '@mui/icons-material/Send';
-import { IconButton, Modal } from '@mui/material';
+import { IconButton } from '@mui/material';
 
 import styled from 'styled-components';
 
+import { useDispatch } from 'react-redux';
+import { updateUserProfile } from '../features/userSlice';
+
+//firebase
 import { auth, provider, storage } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithPopup,
+  updateProfile,
 } from 'firebase/auth';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { PasswordResetModal } from './PasswordResetModal';
 
 const theme = createTheme();
-
-function getModalStyle() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 export const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -45,9 +41,41 @@ export const Auth: React.FC = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [avatar, setAvatar] = useState<File | null>(null);
+
+  const dispatch = useDispatch();
 
   const signUp = async () => {
-    await createUserWithEmailAndPassword(auth, email, password);
+    const authUser = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    let url = '';
+    if (avatar) {
+      const S =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const N = 16;
+      const randomChar = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+        .map((n) => S[n % S.length])
+        .join('');
+      const fileName = randomChar + '_' + avatar.name;
+      await uploadBytes(ref(storage, `avatars/${fileName}`), avatar);
+      url = await getDownloadURL(ref(storage, `avatars/${fileName}`));
+    }
+    if (authUser.user) {
+      await updateProfile(authUser.user, {
+        displayName: userName,
+        photoURL: url,
+      });
+    }
+    dispatch(
+      updateUserProfile({
+        displayName: userName,
+        photoUrl: url,
+      })
+    );
   };
 
   const signIn = async () => {
@@ -64,6 +92,13 @@ export const Auth: React.FC = () => {
         alert(err.message);
         setResetEmail('');
       });
+  };
+
+  const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files![0]) {
+      setAvatar(e.target.files![0]);
+      e.target.value = '';
+    }
   };
 
   const signInGoogle = async () => {
@@ -106,6 +141,33 @@ export const Auth: React.FC = () => {
             <Typography component="h1" variant="h5">
               {isLogin ? 'ログイン' : '新規登録'}
             </Typography>
+            {!isLogin && (
+              <>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  value={userName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setUserName(e.target.value);
+                  }}
+                />
+                <Box textAlign="center">
+                  <IconButton>
+                    <label>
+                      <AccountCircleIcon fontSize="large" />
+                      <SInput type="file" onChange={onChangeImageHandler} />
+                    </label>
+                  </IconButton>
+                </Box>
+              </>
+            )}
             <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -136,7 +198,6 @@ export const Auth: React.FC = () => {
                 }
               />
               <Button
-                type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
@@ -173,42 +234,25 @@ export const Auth: React.FC = () => {
                 </Grid>
               </Grid>
 
-              <IconButton>
-                <GoogleIcon onClick={signInGoogle} />
+              <IconButton onClick={signInGoogle}>
+                <GoogleIcon />
               </IconButton>
             </Box>
           </Box>
-          <Modal open={openModal} onClose={() => setOpenModal(false)}>
-            <SMDiv style={getModalStyle()}>
-              <div>
-                <TextField
-                  InputLabelProps={{ shrink: true }}
-                  type="email"
-                  name="email"
-                  label="Reset E-mail"
-                  value={resetEmail}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setResetEmail(e.target.value);
-                  }}
-                />
-                <IconButton onClick={sendResetEmail}>
-                  <SendIcon />
-                </IconButton>
-              </div>
-            </SMDiv>
-          </Modal>
+          <PasswordResetModal
+            openModal={openModal}
+            setOpenModal={setOpenModal}
+            resetEmail={resetEmail}
+            setResetEmail={setResetEmail}
+            sendResetEmail={sendResetEmail}
+          />
         </Grid>
       </Grid>
     </ThemeProvider>
   );
 };
 
-const SMDiv = styled.div`
-  outline: none;
-  position: absolute;
-  width: 500px;
-  border-radius: 10;
-  background-color: #fff;
-  box-shadow: 0 0 10px #8f8b8b;
-  padding: 100px;
+const SInput = styled.input`
+  text-align: center;
+  display: none;
 `;
