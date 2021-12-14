@@ -1,28 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { auth } from '../firebase';
+import { db } from '../firebase';
+import { collection, query, onSnapshot } from 'firebase/firestore';
 import { MenuAppBar } from './molecule/Header';
 
-import backGround from '../Images/backGround.jpeg';
+import backGround from '../images/backGround.jpeg';
 import { UserCard } from './atom/UserCard';
 
-import { selectUser, userSlice } from '../features/userSlice';
-import { useSelector } from 'react-redux';
-
 export const Home: React.FC = () => {
-  const user = useSelector(selectUser);
-  console.log(user);
+  const [users, setUsers] = useState([
+    {
+      displayName: '',
+      photoUrl: '',
+    },
+  ]);
+
+  useEffect(() => {
+    const q = query(collection(db, 'chat/v1/users'));
+    const unSub = onSnapshot(q, (snapshot) => {
+      setUsers(
+        snapshot.docs.map((doc) => ({
+          displayName: doc.data().displayName,
+          photoUrl: doc.data().photoUrl,
+        }))
+      );
+    });
+    return () => {
+      unSub();
+    };
+  }, []);
+
   return (
     <SDiv>
       <div>
         <MenuAppBar />
       </div>
-      {[...Array(12)].map(() => {
+      {users.map((user, key) => {
         return (
-          <SUserCardWrap>
-            <UserCard />
+          <SUserCardWrap key={key}>
+            <UserCard displayName={user.displayName} photoUrl={user.photoUrl} />
           </SUserCardWrap>
         );
       })}

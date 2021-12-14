@@ -16,7 +16,7 @@ admin.initializeApp({ projectId });
 const db = admin.firestore();
 const auth = admin.auth();
 
-let users = [...Array(20).keys()].map(() => {
+let users = [...Array(10).keys()].map(() => {
   return {
     password: internet.password(),
     email: internet.email(),
