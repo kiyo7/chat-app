@@ -30,13 +30,20 @@ async function seedDummyData() {
   // ユーザー作成・Auth登録
   try {
     for (let i = 0; i < users.length; i++) {
-      await auth.createUser({
-        email: users[i].email,
-        password: users[i].password,
-        displayName: users[i].displayName,
-        photoURL: users[i].photoURL,
-      });
-
+      await auth
+        .createUser({
+          email: users[i].email,
+          password: users[i].password,
+          displayName: users[i].displayName,
+          photoURL: users[i].photoURL,
+        })
+        .then(async (data) => {
+          await db.doc(`chat/v1/users/${data.uid}`).set({
+            displayName: data.displayName,
+            email: data.email,
+            photoURL: users[i].photoURL,
+          });
+        });
       await db
         .collection('chat/v1/users')
         .orderBy('createdAt')
