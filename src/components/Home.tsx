@@ -6,7 +6,7 @@ import { db } from '../firebase';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { MenuAppBar } from './molecule/Header';
 
-import backGround from '../images/backGround.jpeg';
+import backGround from '../Images/backGround.jpeg';
 import { UserCard } from './atom/UserCard';
 
 export const Home: React.FC = () => {
