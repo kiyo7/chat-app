@@ -5,11 +5,14 @@ import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import { selectUser } from '../../features/userSlice';
-import { useSelector } from 'react-redux';
 
-export const UserCard: React.FC = (props) => {
-  const user = useSelector(selectUser);
+interface User {
+  displayName: string;
+  photoUrl: string;
+}
+
+export const UserCard: React.FC<User> = (props) => {
+  const { displayName, photoUrl } = props;
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -18,10 +21,10 @@ export const UserCard: React.FC = (props) => {
           <Avatar
             sx={{ bgcolor: red[500] }}
             aria-label="recipe"
-            src={user.photoUrl}
+            src={photoUrl}
           ></Avatar>
         }
-        title={user.displayName}
+        title={displayName}
       />
 
       <CardContent>
