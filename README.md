@@ -1,28 +1,21 @@
-yarn の install
 
-yarn
-
-yarn start localhost:3000
-
-java の install
-
-# 開発に使用したソフトウェア
+# 開発に使用したソフトウェア🚀
 
 - Node.js v16.x
 - Yarn
 - Firebase
 
-# yarn のインストール方法
+# yarn のインストール方法　🍀
 
 ```
 $ npm install -g yarn
 ```
 
-# Java のインストール方法
+# Java のインストール方法 🗒
 
 [https://java.com/ja/download/help/download_options_ja.html]
 
-# サーバの起動
+# サーバの起動 🤖
 
 ```
 $ git clone https://github.com/kiyo7/chat-app.git
@@ -34,11 +27,11 @@ $ yarn build
 $ yarn start <- 下記リンクからアクセス出来ます。
 ```
 
-[http://localhost:3000/]
+http://localhost:3000/　
 
-## Firebase Emulator の起動 デモデータの導入
+## FirebaseEmulatorの起動とデモデータの導入　🍞
 
-# Emulator 起動には Java が必要になります。
+### 🚨Emulator 起動には Java が必要になります。
 
 ```
 $ firebase emulators:start
