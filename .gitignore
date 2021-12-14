@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 /.env
+/src/images
+
+/*-debug.log
+
 
 # testing
 /coverage
