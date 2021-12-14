@@ -52,6 +52,7 @@ export const Auth: React.FC = () => {
       email,
       password
     );
+
     let url = '';
     if (avatar) {
       const S =

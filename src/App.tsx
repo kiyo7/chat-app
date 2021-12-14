@@ -8,6 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import ChatRoom from './components/ChatRoom';
 import { Auth } from './components/Auth';
+import { Home } from './components/Home';
 
 const App: React.FC = () => {
   const user = useSelector(selectUser);
@@ -36,7 +37,7 @@ const App: React.FC = () => {
     <>
       {user.uid ? (
         <Sdiv className="App">
-          <ChatRoom />
+          <Home />
         </Sdiv>
       ) : (
         <Auth />
@@ -48,8 +49,7 @@ const App: React.FC = () => {
 const Sdiv = styled.div`
   display: flex;
   height: 100vh;
-  padding: 30px 80px;
-  background-color: #d5c9c9;
+  width: 100vw;
 `;
 
 export default App;
