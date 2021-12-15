@@ -1,21 +1,16 @@
+# 開発に使用したソフトウェア 🚀
 
-# 開発に使用したソフトウェア🚀
-
-- Node.js v16.x
+- Node.js v16.13.1
 - Yarn
 - Firebase
 
-# yarn のインストール方法🍀
+# yarn のインストール方法 🍀
 
 ```
 $ npm install -g yarn
 ```
 
-# Java のインストール方法🗒
-
-[https://java.com/ja/download/help/download_options_ja.html]
-
-# サーバの起動🤖
+# サーバの起動 🤖
 
 ```
 $ git clone https://github.com/kiyo7/chat-app.git
@@ -27,11 +22,15 @@ $ yarn build
 $ yarn start <- 下記リンクからアクセス出来ます。
 ```
 
-http://localhost:3000/　
+http://localhost:3000/
 
-## FirebaseEmulatorの起動とデモデータの導入🍞
+## FirebaseEmulator の起動とデモデータの導入 🍞
 
 ### 🚨Emulator 起動には Java が必要になります。
+
+### Java のインストール方法 🗒
+
+[https://java.com/ja/download/help/download_options_ja.html]
 
 ```
 $ firebase emulators:start

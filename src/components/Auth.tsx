@@ -199,6 +199,11 @@ export const Auth: React.FC = () => {
                 }
               />
               <Button
+                disabled={
+                  isLogin
+                    ? !email || password.length < 6
+                    : !userName || !email || password.length < 6 || !avatar
+                }
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
