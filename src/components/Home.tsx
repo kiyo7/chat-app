@@ -17,13 +17,15 @@ export const Home: React.FC = () => {
     },
   ]);
 
+  console.log(users);
+
   useEffect(() => {
     const q = query(collection(db, 'chat/v1/users'));
     const unSub = onSnapshot(q, (snapshot) => {
       setUsers(
         snapshot.docs.map((doc) => ({
           displayName: doc.data().displayName,
-          photoUrl: doc.data().photoUrl,
+          photoUrl: doc.data().photoURL,
         }))
       );
     });

@@ -43,6 +43,7 @@ export const Auth: React.FC = () => {
   const [resetEmail, setResetEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [avatar, setAvatar] = useState<File | null>(null);
+  const [imageIsSelected, setImageIsSelected] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -98,6 +99,7 @@ export const Auth: React.FC = () => {
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files![0]) {
       setAvatar(e.target.files![0]);
+      setImageIsSelected(true);
       e.target.value = '';
     }
   };
@@ -162,7 +164,11 @@ export const Auth: React.FC = () => {
                 <Box textAlign="center">
                   <IconButton>
                     <label>
-                      <AccountCircleIcon fontSize="large" />
+                      {imageIsSelected ? (
+                        <img src={avatar?.name} alt="画像" />
+                      ) : (
+                        <AccountCircleIcon fontSize="large" />
+                      )}
                       <SInput type="file" onChange={onChangeImageHandler} />
                     </label>
                   </IconButton>
@@ -199,11 +205,6 @@ export const Auth: React.FC = () => {
                 }
               />
               <Button
-                disabled={
-                  isLogin
-                    ? !email || password.length < 6
-                    : !userName || !email || password.length < 6 || !avatar
-                }
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
