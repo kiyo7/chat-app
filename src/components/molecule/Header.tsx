@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 //material-ui
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 
-export const MenuAppBar: React.FC = () => {
+export const Header: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -25,7 +25,7 @@ export const MenuAppBar: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ position: 'fixed', zIndex: 10 }}>
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Chat-App

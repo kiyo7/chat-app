@@ -6,9 +6,10 @@ import { selectUser, login, logout } from './features/userSlice';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import ChatRoom from './components/ChatRoom';
 import { Auth } from './components/Auth';
 import { Home } from './components/Home';
+
+import backGround from './Images/backGround.gif';
 
 const App: React.FC = () => {
   const user = useSelector(selectUser);
@@ -16,12 +17,13 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (authUser) => {
+      console.log(authUser);
       if (authUser) {
         dispatch(
           login({
             uid: authUser.uid,
             displayName: authUser.displayName,
-            photoUrl: authUser.photoURL,
+            photoURL: authUser.photoURL,
           })
         );
       } else {
@@ -36,9 +38,9 @@ const App: React.FC = () => {
   return (
     <>
       {user.uid ? (
-        <Sdiv className="App">
+        <SDiv className="App">
           <Home />
-        </Sdiv>
+        </SDiv>
       ) : (
         <Auth />
       )}
@@ -46,10 +48,11 @@ const App: React.FC = () => {
   );
 };
 
-const Sdiv = styled.div`
+const SDiv = styled.div`
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 200vh;
+  background-image: url(${backGround});
+  background-size: cover;
 `;
 
 export default App;

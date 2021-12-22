@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux';
 import { updateUserProfile } from '../features/userSlice';
 
 //firebase
-import { auth, provider, storage } from '../firebase';
+import { auth, provider, storage, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -31,6 +31,7 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { addDoc, collection } from 'firebase/firestore';
 import { PasswordResetModal } from './PasswordResetModal';
 
 const theme = createTheme();
@@ -71,11 +72,16 @@ export const Auth: React.FC = () => {
         displayName: userName,
         photoURL: url,
       });
+      await addDoc(collection(db, 'chat/v1/users'), {
+        displayName: userName,
+        email: email,
+        photoURL: url,
+      });
     }
     dispatch(
       updateUserProfile({
         displayName: userName,
-        photoUrl: url,
+        photoURL: url,
       })
     );
   };
@@ -97,8 +103,9 @@ export const Auth: React.FC = () => {
   };
 
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files![0]) {
-      setAvatar(e.target.files![0]);
+    const file = e.target.files![0];
+    if (file) {
+      setAvatar(file);
       setImageIsSelected(true);
       e.target.value = '';
     }
@@ -164,12 +171,12 @@ export const Auth: React.FC = () => {
                 <Box textAlign="center">
                   <IconButton>
                     <label>
+                      <SInput type="file" onChange={onChangeImageHandler} />
                       {imageIsSelected ? (
-                        <img src={avatar?.name} alt="画像" />
+                        <img src={avatar!.name} alt="画像" />
                       ) : (
                         <AccountCircleIcon fontSize="large" />
                       )}
-                      <SInput type="file" onChange={onChangeImageHandler} />
                     </label>
                   </IconButton>
                 </Box>

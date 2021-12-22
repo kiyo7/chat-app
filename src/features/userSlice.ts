@@ -3,24 +3,24 @@ import { RootState } from '../app/store';
 
 interface User {
   displayName: string;
-  photoUrl: string;
+  photoURL: string;
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    user: { uid: '', photoUrl: '', displayName: '' },
+    user: { uid: '', photoURL: '', displayName: '' },
   },
   reducers: {
     login: (state, action) => {
       state.user = action.payload;
     },
     logout: (state) => {
-      state.user = { uid: '', photoUrl: '', displayName: '' };
+      state.user = { uid: '', photoURL: '', displayName: '' };
     },
     updateUserProfile: (state, action: PayloadAction<User>) => {
       state.user.displayName = action.payload.displayName;
-      state.user.photoUrl = action.payload.photoUrl;
+      state.user.photoURL = action.payload.photoURL;
     },
   },
 });
