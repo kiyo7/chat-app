@@ -3,64 +3,72 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { db } from '../firebase';
-import { collection, query, onSnapshot } from 'firebase/firestore';
-import { MenuAppBar } from './molecule/Header';
+import { collection, query, onSnapshot, where } from 'firebase/firestore';
+import { Header } from './molecule/Header';
 
-import backGround from '../Images/backGround.jpeg';
 import { UserCard } from './atom/UserCard';
+import { ChatRoom } from './ChatRoom';
+
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
 
 export const Home: React.FC = () => {
+  const user = useSelector(selectUser);
   const [users, setUsers] = useState([
     {
       displayName: '',
-      photoUrl: '',
+      photoURL: '',
     },
   ]);
 
-  console.log(users);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    const q = query(collection(db, 'chat/v1/users'));
+    const q = query(
+      collection(db, 'chat/v1/users'),
+      where('displayName', '!=', user.displayName)
+    );
     const unSub = onSnapshot(q, (snapshot) => {
       setUsers(
         snapshot.docs.map((doc) => ({
           displayName: doc.data().displayName,
-          photoUrl: doc.data().photoURL,
+          photoURL: doc.data().photoURL,
         }))
       );
     });
     return () => {
       unSub();
     };
-  }, []);
+  }, [user.displayName]);
 
   return (
-    <SDiv>
+    <>
       <div>
-        <MenuAppBar />
+        <Header />
+        {users.map((user, key) => {
+          return (
+            <SUserCardWrap key={key} onClick={() => handleOpen()}>
+              <UserCard
+                displayName={user.displayName}
+                photoURL={user.photoURL}
+              />
+            </SUserCardWrap>
+          );
+        })}
       </div>
-      {users.map((user, key) => {
-        return (
-          <SUserCardWrap key={key}>
-            <UserCard displayName={user.displayName} photoUrl={user.photoUrl} />
-          </SUserCardWrap>
-        );
-      })}
-    </SDiv>
+      <ChatRoom open={open} handleClose={handleClose} />
+    </>
   );
 };
-
-const SDiv = styled.div`
-  width: 100vw;
-  background-image: url(${backGround});
-  background-size: cover;
-`;
 
 const SUserCardWrap = styled.div`
   display: inline-block;
   margin: 0 10px;
-  padding: 30px 20px 10px;
+  padding: 100px 20px 10px;
   &:hover {
     cursor: pointer;
+    opacity: 0.7;
   }
 `;

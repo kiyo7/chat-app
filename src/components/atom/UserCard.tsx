@@ -4,26 +4,19 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 
 interface User {
   displayName: string;
-  photoUrl: string;
+  photoURL: string;
 }
 
 export const UserCard: React.FC<User> = (props) => {
-  const { displayName, photoUrl } = props;
+  const { displayName, photoURL } = props;
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
-        avatar={
-          <Avatar
-            sx={{ bgcolor: red[500] }}
-            aria-label="recipe"
-            src={photoUrl}
-          ></Avatar>
-        }
+        avatar={<Avatar aria-label="recipe" src={photoURL}></Avatar>}
         title={displayName}
       />
 
