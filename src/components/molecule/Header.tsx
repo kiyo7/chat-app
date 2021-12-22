@@ -5,14 +5,18 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase';
 
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/userSlice';
+import { Avatar } from '@mui/material';
+
 export const Header: React.FC = () => {
+  const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   const handleMenu = (e: React.MouseEvent<HTMLElement>) => {
@@ -39,7 +43,7 @@ export const Header: React.FC = () => {
               onClick={handleMenu}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar src={user.photoURL} />
             </IconButton>
             <Menu
               id="menu-appbar"

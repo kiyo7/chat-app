@@ -3,13 +3,17 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { db } from '../firebase';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import { collection, query, onSnapshot, where } from 'firebase/firestore';
 import { Header } from './molecule/Header';
 
 import { UserCard } from './atom/UserCard';
 import { ChatRoom } from './ChatRoom';
 
+import { useSelector } from 'react-redux';
+import { selectUser } from '../features/userSlice';
+
 export const Home: React.FC = () => {
+  const user = useSelector(selectUser);
   const [users, setUsers] = useState([
     {
       displayName: '',
@@ -22,7 +26,10 @@ export const Home: React.FC = () => {
   const handleClose = () => setOpen(false);
 
   useEffect(() => {
-    const q = query(collection(db, 'chat/v1/users'));
+    const q = query(
+      collection(db, 'chat/v1/users'),
+      where('displayName', '!=', user.displayName)
+    );
     const unSub = onSnapshot(q, (snapshot) => {
       setUsers(
         snapshot.docs.map((doc) => ({
@@ -34,7 +41,7 @@ export const Home: React.FC = () => {
     return () => {
       unSub();
     };
-  }, []);
+  }, [user.displayName]);
 
   return (
     <>
