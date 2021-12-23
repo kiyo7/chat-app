@@ -1,8 +1,8 @@
 # 開発に使用したソフトウェア 🚀
 
-- Node.js v16.13.1
-- Yarn　ｖ1.22.10
-- Firebase　v9.6.0
+- Node.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v 16.13.1
+- Yarn&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v 1.22.10
+- Firebase&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v 9.6.0
 
 # yarn のインストール方法 🍀
 
