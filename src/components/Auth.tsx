@@ -32,6 +32,7 @@ import {
 } from 'firebase/auth';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { addDoc, collection } from 'firebase/firestore';
+
 import { PasswordResetModal } from './PasswordResetModal';
 
 const theme = createTheme();
@@ -45,6 +46,7 @@ export const Auth: React.FC = () => {
   const [userName, setUserName] = useState('');
   const [avatar, setAvatar] = useState<File | null>(null);
   const [imageIsSelected, setImageIsSelected] = useState(false);
+  const [prevAvatar, setPrevAvatar] = useState<string | ArrayBuffer | null>('');
 
   const dispatch = useDispatch();
 
@@ -102,9 +104,19 @@ export const Auth: React.FC = () => {
       });
   };
 
+  const previewFile = (file: Blob) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const imageUrl = e.target!.result;
+      setPrevAvatar(imageUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     if (file) {
+      previewFile(file);
       setAvatar(file);
       setImageIsSelected(true);
       e.target.value = '';
@@ -173,7 +185,7 @@ export const Auth: React.FC = () => {
                     <label>
                       <SInput type="file" onChange={onChangeImageHandler} />
                       {imageIsSelected ? (
-                        <img src={avatar!.name} alt="画像" />
+                        <Avatar src={prevAvatar!.toString()} />
                       ) : (
                         <AccountCircleIcon fontSize="large" />
                       )}
