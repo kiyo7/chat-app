@@ -1,28 +1,50 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TextInput = () => {
+import SendRoundedIcon from '@mui/icons-material/SendRounded';
+import { IconButton } from '@mui/material';
+
+interface Props {
+  setMsg: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const TextInput: React.FC<Props> = (props) => {
+  const { setMsg } = props;
+
+  const sendMessage = () => {
+    console.log('メッセージ送信');
+  };
   return (
-    <STextInputWrapper>
-      <SDummy aria-hidden="true"></SDummy>
-      <STextArea id="FlexTextarea"></STextArea>
-    </STextInputWrapper>
+    <>
+      <STextInputWrapper>
+        <SDummy aria-hidden="true" />
+        <STextArea
+          id="FlexTextarea"
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setMsg(e.target.value)
+          }
+        />
+        <IconButton onClick={() => sendMessage()}>
+          <SendRoundedIcon fontSize="large" />
+        </IconButton>
+      </STextInputWrapper>
+    </>
   );
 };
 
 const STextInputWrapper = styled.div`
-  position: relative;
-  top: 420px;
+  width: 100%;
   font-size: 1rem;
   line-height: 1.8;
+  display: flex;
 `;
 
 const SDummy = styled.div`
   overflow: hidden;
   visibility: hidden;
   box-sizing: border-box;
-  padding: 5px 15px;
-  min-height: 70px;
+  padding: 3px 15px;
+  min-height: 50px;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -30,24 +52,19 @@ const SDummy = styled.div`
 `;
 
 const STextArea = styled.textarea`
-  position: absolute;
-  top: 0;
-  left: 0;
   display: block;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 5px 15px;
-  width: 90%;
-  height: 100%;
+  padding: 3px 15px;
+  width: 95%;
   background-color: transparent;
-  border: 1px solid #b6c3c6;
-  border-radius: 4px;
+  border-radius: 10px;
   color: inherit;
   font: inherit;
   letter-spacing: inherit;
   resize: none;
   &: focus {
-    box-shadow: 0 0 0 4px rgba(35, 167, 195, 0.3);
+    box-shadow: 0 0 0 2px #000000;
     outline: 0;
   }
 `;
