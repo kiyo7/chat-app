@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateUserProfile } from '../features/userSlice';
 
 //material-ui
 import Avatar from '@mui/material/Avatar';
@@ -16,11 +18,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GoogleIcon from '@mui/icons-material/Google';
 import { IconButton } from '@mui/material';
 
-import styled from 'styled-components';
-
-import { useDispatch } from 'react-redux';
-import { updateUserProfile } from '../features/userSlice';
-
 //firebase
 import { auth, provider, storage, db } from '../firebase';
 import {
@@ -33,7 +30,10 @@ import {
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { addDoc, collection } from 'firebase/firestore';
 
+//components
 import { PasswordResetModal } from './PasswordResetModal';
+
+import styled from 'styled-components';
 
 const theme = createTheme();
 

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+//@mui
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import TextInput from './atom/TextInput';
 
+//components
+import { Header } from './molecule/Header';
+
 import chatBack from '../Images/chatBack.jpg';
 import styled from 'styled-components';
-
-import { Header } from './molecule/Header';
 
 const style = {
   position: 'absolute' as 'absolute',

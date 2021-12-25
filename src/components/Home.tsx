@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-
-import styled from 'styled-components';
-
-import { auth, db } from '../firebase';
-import { collection, query, onSnapshot, where } from 'firebase/firestore';
-import { Header } from './molecule/Header';
-
-import { UserCard } from './atom/UserCard';
-
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
+//firebase
+import { auth, db } from '../firebase';
+import { collection, query, onSnapshot, where } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
+
+//components
+import { Header } from './molecule/Header';
+import { UserCard } from './atom/UserCard';
+
+import styled from 'styled-components';
 
 export const Home: React.FC = () => {
   const user = useSelector(selectUser);
@@ -44,7 +44,7 @@ export const Home: React.FC = () => {
       <div>
         <Header
           wide={'100vw'}
-          title={'ChatApp'}
+          title={'ひまチャ'}
           onClickEvent={() => signOut(auth)}
         />
         {users.map((user, key) => {
