@@ -1,8 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 
+//@mui
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { IconButton } from '@mui/material';
+
+import styled from 'styled-components';
 
 interface Props {
   setMsg: React.Dispatch<React.SetStateAction<string>>;

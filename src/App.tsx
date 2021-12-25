@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, login, logout } from './features/userSlice';
+
+//firebase
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
+//components
 import { Auth } from './components/Auth';
 import { Home } from './components/Home';
 
 import backGround from './Images/backGround.gif';
+import styled from 'styled-components';
 
 const App: React.FC = () => {
   const user = useSelector(selectUser);

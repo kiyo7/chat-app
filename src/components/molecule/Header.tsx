@@ -1,5 +1,7 @@
 import React from 'react';
-//material-ui
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../features/userSlice';
+//@mui
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,10 +9,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../features/userSlice';
-import { Avatar } from '@mui/material';
+import { Avatar, styled } from '@mui/material';
+import WestOutlinedIcon from '@mui/icons-material/WestOutlined';
 
 interface Props {
   wide: string;
@@ -44,6 +44,7 @@ export const Header: React.FC<Props> = (props) => {
         }}
       >
         <Toolbar>
+          {isChatRoom && <SWestOutlinedIcon onClick={onClickEvent} />}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
@@ -56,7 +57,7 @@ export const Header: React.FC<Props> = (props) => {
               onClick={handleMenu}
               color="inherit"
             >
-              <Avatar src={user.photoURL} />
+              {isChatRoom || <Avatar src={user.photoURL} />}
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -73,11 +74,7 @@ export const Header: React.FC<Props> = (props) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              {isChatRoom ? (
-                <MenuItem onClick={onClickEvent}>戻る</MenuItem>
-              ) : (
-                <MenuItem onClick={onClickEvent}>ログアウト</MenuItem>
-              )}
+              <MenuItem onClick={onClickEvent}>ログアウト</MenuItem>
             </Menu>
           </div>
         </Toolbar>
@@ -85,3 +82,11 @@ export const Header: React.FC<Props> = (props) => {
     </Box>
   );
 };
+
+const SWestOutlinedIcon = styled(WestOutlinedIcon)`
+  margin-right: 10px;
+  :hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
+`;

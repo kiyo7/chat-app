@@ -1,9 +1,10 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
+//@mui
 import { IconButton, Modal, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+
+import styled from 'styled-components';
 
 function getModalStyle() {
   const top = 50;
