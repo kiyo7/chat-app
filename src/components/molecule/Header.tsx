@@ -8,14 +8,20 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase';
-
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../features/userSlice';
 import { Avatar } from '@mui/material';
 
-export const Header: React.FC = () => {
+interface Props {
+  wide: string;
+  title: string;
+  onClickEvent: () => void;
+  isChatRoom?: boolean;
+}
+
+export const Header: React.FC<Props> = (props) => {
+  const { wide, title, onClickEvent, isChatRoom = false } = props;
+
   const user = useSelector(selectUser);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
@@ -29,10 +35,17 @@ export const Header: React.FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ position: 'fixed', zIndex: 10 }}>
+      <AppBar
+        position="static"
+        style={{
+          position: 'fixed',
+          zIndex: 10,
+          width: wide,
+        }}
+      >
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Chat-App
+            {title}
           </Typography>
           <div>
             <IconButton
@@ -60,7 +73,11 @@ export const Header: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => signOut(auth)}>ログアウト</MenuItem>
+              {isChatRoom ? (
+                <MenuItem onClick={onClickEvent}>戻る</MenuItem>
+              ) : (
+                <MenuItem onClick={onClickEvent}>ログアウト</MenuItem>
+              )}
             </Menu>
           </div>
         </Toolbar>

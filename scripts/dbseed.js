@@ -1,6 +1,6 @@
 const admin = require('firebase-admin');
 const faker = require('faker');
-const { date, internet } = require('faker');
+const { internet } = require('faker');
 
 // initialization
 const projectId = 'chaaaaat-4e459';
